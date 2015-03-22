@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>2F53BDEC-0A9D-4531-ADF0-6540C65BD0A4</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Ticas</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>DD4EFAA8FAF9F026BA23AB14E99C8A72DF7E766F</key>
+		<string>https://github.com/GuyKahlon/Ticas.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Ticas/Ticas.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>DD4EFAA8FAF9F026BA23AB14E99C8A72DF7E766F</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/GuyKahlon/Ticas.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>DD4EFAA8FAF9F026BA23AB14E99C8A72DF7E766F</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>DD4EFAA8FAF9F026BA23AB14E99C8A72DF7E766F</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Ticas%20App</string>
+		</dict>
+	</array>
+</dict>
+</plist>
