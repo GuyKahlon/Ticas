@@ -7,12 +7,28 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		50AE72E61AC00ECE00703C60 /* TCSetupFlightViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50AE72E51AC00ECE00703C60 /* TCSetupFlightViewController.swift */; };
 		50B47C491ABEE88D006C1B52 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50B47C481ABEE88D006C1B52 /* AppDelegate.swift */; };
-		50B47C4B1ABEE88D006C1B52 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50B47C4A1ABEE88D006C1B52 /* ViewController.swift */; };
 		50B47C4E1ABEE88D006C1B52 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 50B47C4C1ABEE88D006C1B52 /* Main.storyboard */; };
 		50B47C501ABEE88D006C1B52 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 50B47C4F1ABEE88D006C1B52 /* Images.xcassets */; };
 		50B47C531ABEE88D006C1B52 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50B47C511ABEE88D006C1B52 /* LaunchScreen.xib */; };
 		50B47C5F1ABEE88D006C1B52 /* TicasTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50B47C5E1ABEE88D006C1B52 /* TicasTests.swift */; };
+		50DFECBC1ABEED1D00D0250C /* TIRegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50DFECBB1ABEED1D00D0250C /* TIRegisterViewController.swift */; };
+		50DFECBE1ABEF95700D0250C /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50DFECBD1ABEF95700D0250C /* Parse.framework */; };
+		50DFECC01ABEF97900D0250C /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50DFECBF1ABEF97800D0250C /* AudioToolbox.framework */; };
+		50DFECC21ABEF98100D0250C /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50DFECC11ABEF98100D0250C /* CFNetwork.framework */; };
+		50DFECC41ABEF98800D0250C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50DFECC31ABEF98800D0250C /* CoreGraphics.framework */; };
+		50DFECC61ABEF99100D0250C /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50DFECC51ABEF99100D0250C /* CoreLocation.framework */; };
+		50DFECC81ABEF99D00D0250C /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50DFECC71ABEF99D00D0250C /* MobileCoreServices.framework */; };
+		50DFECCA1ABEF9A700D0250C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50DFECC91ABEF9A700D0250C /* QuartzCore.framework */; };
+		50DFECCC1ABEF9B400D0250C /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50DFECCB1ABEF9B400D0250C /* Security.framework */; };
+		50DFECD01ABEF9C900D0250C /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50DFECCF1ABEF9C900D0250C /* SystemConfiguration.framework */; };
+		50DFECD21ABEF9D100D0250C /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 50DFECD11ABEF9D100D0250C /* libz.dylib */; };
+		50DFECD41ABEF9DA00D0250C /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 50DFECD31ABEF9DA00D0250C /* libsqlite3.dylib */; };
+		50DFECDA1ABEFB5100D0250C /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50DFECD91ABEFB5100D0250C /* Bolts.framework */; };
+		50DFECDC1ABF03A400D0250C /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50DFECDB1ABF03A400D0250C /* MapKit.framework */; };
+		50DFECE01ABF064100D0250C /* TCMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50DFECDF1ABF064100D0250C /* TCMapViewController.swift */; };
+		50DFECE41ABF0DBC00D0250C /* TCUserDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50DFECE31ABF0DBC00D0250C /* TCUserDetailsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -26,16 +42,33 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		50AE72E51AC00ECE00703C60 /* TCSetupFlightViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TCSetupFlightViewController.swift; sourceTree = "<group>"; };
 		50B47C431ABEE88D006C1B52 /* Ticas.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Ticas.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		50B47C471ABEE88D006C1B52 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		50B47C481ABEE88D006C1B52 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		50B47C4A1ABEE88D006C1B52 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		50B47C4D1ABEE88D006C1B52 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		50B47C4F1ABEE88D006C1B52 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		50B47C521ABEE88D006C1B52 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		50B47C581ABEE88D006C1B52 /* TicasTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TicasTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		50B47C5D1ABEE88D006C1B52 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		50B47C5E1ABEE88D006C1B52 /* TicasTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TicasTests.swift; sourceTree = "<group>"; };
+		50DFECBB1ABEED1D00D0250C /* TIRegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TIRegisterViewController.swift; sourceTree = "<group>"; };
+		50DFECBD1ABEF95700D0250C /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
+		50DFECBF1ABEF97800D0250C /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		50DFECC11ABEF98100D0250C /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		50DFECC31ABEF98800D0250C /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		50DFECC51ABEF99100D0250C /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		50DFECC71ABEF99D00D0250C /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		50DFECC91ABEF9A700D0250C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		50DFECCB1ABEF9B400D0250C /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		50DFECCF1ABEF9C900D0250C /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		50DFECD11ABEF9D100D0250C /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		50DFECD31ABEF9DA00D0250C /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		50DFECD61ABEFA2300D0250C /* Ticas-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Ticas-Bridging-Header.h"; sourceTree = "<group>"; };
+		50DFECD91ABEFB5100D0250C /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
+		50DFECDB1ABF03A400D0250C /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		50DFECDF1ABF064100D0250C /* TCMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TCMapViewController.swift; sourceTree = "<group>"; };
+		50DFECE31ABF0DBC00D0250C /* TCUserDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TCUserDetailsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +76,19 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				50DFECD41ABEF9DA00D0250C /* libsqlite3.dylib in Frameworks */,
+				50DFECD21ABEF9D100D0250C /* libz.dylib in Frameworks */,
+				50DFECD01ABEF9C900D0250C /* SystemConfiguration.framework in Frameworks */,
+				50DFECDC1ABF03A400D0250C /* MapKit.framework in Frameworks */,
+				50DFECCC1ABEF9B400D0250C /* Security.framework in Frameworks */,
+				50DFECCA1ABEF9A700D0250C /* QuartzCore.framework in Frameworks */,
+				50DFECC81ABEF99D00D0250C /* MobileCoreServices.framework in Frameworks */,
+				50DFECDA1ABEFB5100D0250C /* Bolts.framework in Frameworks */,
+				50DFECC61ABEF99100D0250C /* CoreLocation.framework in Frameworks */,
+				50DFECC41ABEF98800D0250C /* CoreGraphics.framework in Frameworks */,
+				50DFECC21ABEF98100D0250C /* CFNetwork.framework in Frameworks */,
+				50DFECC01ABEF97900D0250C /* AudioToolbox.framework in Frameworks */,
+				50DFECBE1ABEF95700D0250C /* Parse.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,9 +105,12 @@
 		50B47C3A1ABEE88D006C1B52 = {
 			isa = PBXGroup;
 			children = (
+				50AE72E51AC00ECE00703C60 /* TCSetupFlightViewController.swift */,
 				50B47C451ABEE88D006C1B52 /* Ticas */,
 				50B47C5B1ABEE88D006C1B52 /* TicasTests */,
+				50DFECD51ABEF9EC00D0250C /* Framworks */,
 				50B47C441ABEE88D006C1B52 /* Products */,
+				50DFECD61ABEFA2300D0250C /* Ticas-Bridging-Header.h */,
 			);
 			sourceTree = "<group>";
 		};
@@ -77,11 +126,10 @@
 		50B47C451ABEE88D006C1B52 /* Ticas */ = {
 			isa = PBXGroup;
 			children = (
-				50B47C481ABEE88D006C1B52 /* AppDelegate.swift */,
-				50B47C4A1ABEE88D006C1B52 /* ViewController.swift */,
+				50DFECBB1ABEED1D00D0250C /* TIRegisterViewController.swift */,
+				50DFECDF1ABF064100D0250C /* TCMapViewController.swift */,
+				50DFECE31ABF0DBC00D0250C /* TCUserDetailsViewController.swift */,
 				50B47C4C1ABEE88D006C1B52 /* Main.storyboard */,
-				50B47C4F1ABEE88D006C1B52 /* Images.xcassets */,
-				50B47C511ABEE88D006C1B52 /* LaunchScreen.xib */,
 				50B47C461ABEE88D006C1B52 /* Supporting Files */,
 			);
 			path = Ticas;
@@ -90,6 +138,9 @@
 		50B47C461ABEE88D006C1B52 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				50B47C4F1ABEE88D006C1B52 /* Images.xcassets */,
+				50B47C481ABEE88D006C1B52 /* AppDelegate.swift */,
+				50B47C511ABEE88D006C1B52 /* LaunchScreen.xib */,
 				50B47C471ABEE88D006C1B52 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -110,6 +161,26 @@
 				50B47C5D1ABEE88D006C1B52 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		50DFECD51ABEF9EC00D0250C /* Framworks */ = {
+			isa = PBXGroup;
+			children = (
+				50DFECD31ABEF9DA00D0250C /* libsqlite3.dylib */,
+				50DFECD11ABEF9D100D0250C /* libz.dylib */,
+				50DFECDB1ABF03A400D0250C /* MapKit.framework */,
+				50DFECD91ABEFB5100D0250C /* Bolts.framework */,
+				50DFECCF1ABEF9C900D0250C /* SystemConfiguration.framework */,
+				50DFECCB1ABEF9B400D0250C /* Security.framework */,
+				50DFECC91ABEF9A700D0250C /* QuartzCore.framework */,
+				50DFECC71ABEF99D00D0250C /* MobileCoreServices.framework */,
+				50DFECC51ABEF99100D0250C /* CoreLocation.framework */,
+				50DFECC31ABEF98800D0250C /* CoreGraphics.framework */,
+				50DFECC11ABEF98100D0250C /* CFNetwork.framework */,
+				50DFECBF1ABEF97800D0250C /* AudioToolbox.framework */,
+				50DFECBD1ABEF95700D0250C /* Parse.framework */,
+			);
+			name = Framworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -161,6 +232,15 @@
 				TargetAttributes = {
 					50B47C421ABEE88D006C1B52 = {
 						CreatedOnToolsVersion = 6.2;
+						DevelopmentTeam = 22H23T9UE8;
+						SystemCapabilities = {
+							com.apple.InAppPurchase = {
+								enabled = 0;
+							};
+							com.apple.Maps.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 					50B47C571ABEE88D006C1B52 = {
 						CreatedOnToolsVersion = 6.2;
@@ -212,8 +292,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				50B47C4B1ABEE88D006C1B52 /* ViewController.swift in Sources */,
+				50DFECE41ABF0DBC00D0250C /* TCUserDetailsViewController.swift in Sources */,
+				50AE72E61AC00ECE00703C60 /* TCSetupFlightViewController.swift in Sources */,
+				50DFECE01ABF064100D0250C /* TCMapViewController.swift in Sources */,
 				50B47C491ABEE88D006C1B52 /* AppDelegate.swift in Sources */,
+				50DFECBC1ABEED1D00D0250C /* TIRegisterViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -338,10 +421,20 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = Ticas/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Ticas;
+				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Ticas-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -349,10 +442,19 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = Ticas/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Ticas;
+				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Ticas-Bridging-Header.h";
 			};
 			name = Release;
 		};
@@ -370,7 +472,7 @@
 				);
 				INFOPLIST_FILE = TicasTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = TicasTests;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Ticas.app/Ticas";
 			};
 			name = Debug;
@@ -385,7 +487,7 @@
 				);
 				INFOPLIST_FILE = TicasTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = TicasTests;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Ticas.app/Ticas";
 			};
 			name = Release;
