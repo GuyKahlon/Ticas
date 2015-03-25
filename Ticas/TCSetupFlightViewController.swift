@@ -12,7 +12,7 @@ class TCSetupFlightViewController: UIViewController {
 
     var numberOfPassengers: Int?{
         get{
-            if let passengers = numberPassengersTextField.text{
+            if let passengers = passengersTextField.text{
                 return passengers.toInt()
             }
             else{
@@ -20,14 +20,25 @@ class TCSetupFlightViewController: UIViewController {
             }
         }
     }
-    var callSign:String?{
+    
+    var numberOfCrew: Int?{
         get{
-            return callSignTextField.text
+            if let passengers = crewTextField.text{
+                return passengers.toInt()
+            }
+            else{
+                return nil
+            }
         }
     }
-    var origin: String?{
+    var trafficFrequency:String?{
         get{
-            return originTextField.text
+            return trafficFrequencyTextField.text
+        }
+    }
+    var departed: String?{
+        get{
+            return departedTextField.text
         }
     }
     var destination: String?{
@@ -36,10 +47,12 @@ class TCSetupFlightViewController: UIViewController {
         }
     }
     
-    @IBOutlet private weak var numberPassengersTextField: UITextField!
-    @IBOutlet private weak var originTextField: UITextField!
+    @IBOutlet private weak var trafficFrequencyTextField: UITextField!
+    @IBOutlet private weak var passengersTextField: UITextField!
+    @IBOutlet private weak var crewTextField: UITextField!
+    @IBOutlet private weak var departedTextField: UITextField!
     @IBOutlet private weak var destinationTextField: UITextField!
-    @IBOutlet private weak var callSignTextField: UITextField!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()

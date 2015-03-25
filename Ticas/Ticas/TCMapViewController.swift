@@ -11,8 +11,9 @@ import MapKit
 
 class Flight {
     var numberOfPassengers: Int?
-    var callSign:String?
-    var origin: String?
+    var numberOfCrew: Int?
+    var trafficFrequency:String?
+    var departed: String?
     var destination: String?
 }
 
@@ -21,14 +22,19 @@ class TCMapViewController: UIViewController {
     var radiusFirstCircle: CLLocationDistance  =  Double(1000)
     var radiusSecondCircle: CLLocationDistance =  Double(2000)
     var radiusThirdCircle: CLLocationDistance  =  Double(3000)
-    
+    var status:PFObject = PFObject(className: ParseStatus.StatusCalssName)
     
     @IBOutlet weak var mapView: MKMapView!
-    @IBOutlet weak var callSignLabel: UILabel!
+    @IBOutlet weak var callSignLabel: UILabel!{
+        didSet{
+            callSignLabel.text = PFUser.currentUser()?[ParseKeys.CallSign] as? String ?? "--"
+        }
+    }
     @IBOutlet weak var courseLabel: UILabel!
     @IBOutlet weak var speedLabel: UILabel!
     @IBOutlet weak var altitudeLable: UILabel!
     @IBOutlet weak var startButton: UIButton!
+    @IBOutlet weak var trafficFrquency: UILabel!
     
     lazy private var locationManager: CLLocationManager = {
         var lezyLocationManager = CLLocationManager()
@@ -74,11 +80,14 @@ class TCMapViewController: UIViewController {
     
         if sender.selected{
             //Stop
+            startButton.selected = false
+            startButton.backgroundColor = UIColor.blueColor()
         }
         else{
             //Setup Flight
             performSegueWithIdentifier("popOverSetupFlightSegue",
                 sender: self)
+            
         }
     }
     
@@ -98,17 +107,22 @@ class TCMapViewController: UIViewController {
                 if let setupFlightVC = segue.sourceViewController as? TCSetupFlightViewController{
                 
                     flightInfo = Flight()
-                    flightInfo!.callSign = setupFlightVC.callSign
+                    flightInfo!.trafficFrequency = setupFlightVC.trafficFrequency
                     flightInfo!.destination = setupFlightVC.destination
-                    flightInfo!.origin = setupFlightVC.origin
+                    flightInfo!.departed = setupFlightVC.departed
                     flightInfo!.numberOfPassengers = setupFlightVC.numberOfPassengers
+                    flightInfo!.numberOfCrew = setupFlightVC.numberOfCrew
                     
-                    callSignLabel.text = setupFlightVC.callSign
+                    
+                    trafficFrquency.text = setupFlightVC.trafficFrequency
                     startButton.selected = true
+                    startButton.backgroundColor = UIColor.redColor()
                 }
             }
         }
     }
+    
+    var aircraftes = [String:PFObject]()
 }
 
 extension TCMapViewController: UIPopoverPresentationControllerDelegate{
@@ -116,6 +130,7 @@ extension TCMapViewController: UIPopoverPresentationControllerDelegate{
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController!) -> UIModalPresentationStyle {
         return .None
     }
+    
     
 }
 
@@ -140,18 +155,6 @@ extension TCMapViewController: CLLocationManagerDelegate{
        
 
     }
-    
-//    func addRadiusOverlays(){
-//        
-//    }
-//    func addRadiusOverLays(coordinate: CLLocationCoordinate2D,
-//        radiuses:[CLLocationDistance],
-//        zoom: Bool = false){
-//        
-//            
-//            
-//            
-//    }
     
     func addRadiusOverlay(radiusDistance:CLLocationDistance,
         coordinate: CLLocationCoordinate2D,
@@ -181,6 +184,86 @@ extension TCMapViewController: CLLocationManagerDelegate{
         static let Velocity        = "velocity"
         static let Altitude        = "altitude"
     }
+
+    func loadAircraft(fromLocation:CLLocation, radiusDistance:CLLocationDistance){
+        
+        var query = PFQuery(className:ParseStatus.StatusCalssName)
+        
+        query.whereKey("geoPoint", nearGeoPoint: PFGeoPoint(latitude: fromLocation.coordinate.latitude, longitude: fromLocation.coordinate.longitude), withinKilometers: 3000/1000)
+        
+        query.whereKey(ParseStatus.Creator, notEqualTo: PFUser.currentUser())
+        query.includeKey(ParseStatus.Creator)
+        
+        query.findObjectsInBackgroundWithBlock { (statuses: [AnyObject]!, error: NSError!) -> Void in
+            
+            println("loadAircraft : \(statuses?.count)")
+            
+            var airCraft = [String:PFObject]()
+            for status in statuses{
+                if let oStatus = status as? PFObject{
+                    if let air = self.aircraftes[oStatus.objectId]{
+                        let location: PFGeoPoint  = status["geoPoint"] as PFGeoPoint
+                        let locationCoordinate = CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude)
+                        air.setCoordinate(locationCoordinate)
+                        airCraft[oStatus.objectId] = oStatus
+                        self.aircraftes[oStatus.objectId] = nil
+                    }
+                    else{
+                        airCraft[oStatus.objectId] = oStatus
+                        self.mapView.addAnnotation(oStatus)
+                    }
+                }
+            }
+            
+            //println("old Aircraft : \(self.aircraftes.count)")
+            //println("new Aircraft : \(airCraft.count)")
+            
+            
+            for (key, oldAir) in self.aircraftes{
+                
+                for a in self.mapView.annotations{
+                    if let b = a as? PFObject{
+                        if b.objectId == oldAir.objectId{
+                            self.mapView.removeAnnotation(b)
+                        }
+                    }
+                }
+                
+                //println("objectId : \(oldAir.objectId)")
+                //println("Map annotations : \(self.mapView.annotations.count)")
+                //self.mapView.removeAnnotation(oldAir)
+                //println("Map annotations : \(self.mapView.annotations.count)")
+            }
+            
+            self.aircraftes = airCraft
+            
+            //println("Aircraft = \(statuses.count)")
+            //self.mapView.removeAnnotations(self.mapView.annotations)
+            //self.mapView.addAnnotations(Array(self.aircraftes.values))
+        }
+    }
+}
+
+extension PFObject: MKAnnotation {
+    
+    public var coordinate: CLLocationCoordinate2D {
+        
+        let location: PFGeoPoint  = self["geoPoint"] as PFGeoPoint
+        let locationCoordinate = CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude)
+        return locationCoordinate
+    }
+    
+    public var title: String {
+        
+        return "Aircraft \(objectId)"
+    }
+    public func setCoordinate(newCoordinate: CLLocationCoordinate2D){
+        //willChangeValueForKey("coordinate")
+        let geoPoint = PFGeoPoint(latitude:newCoordinate.latitude,
+            longitude:newCoordinate.longitude)
+        self["geoPoint"] = geoPoint
+        //didChangeValueForKey("coordinate")
+    }
 }
 
 extension TCMapViewController: MKMapViewDelegate{
@@ -196,7 +279,7 @@ extension TCMapViewController: MKMapViewDelegate{
     
     private func updateStatus(location: CLLocation){
         
-        var status:PFObject = PFObject(className: ParseStatus.StatusCalssName)
+        //var status:PFObject = PFObject(className: ParseStatus.StatusCalssName)
         
         let geoPoint = PFGeoPoint(latitude:location.coordinate.latitude,
             longitude:location.coordinate.longitude)
@@ -237,28 +320,9 @@ extension TCMapViewController: MKMapViewDelegate{
         return nil
     }
     
-    func mapView(mapView: MKMapView!,viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView!{
-        
-        if annotation is MKUserLocation {
-            //return nil so map view draws "blue dot" for standard user location
-            return nil
-        }
-        
-        return nil
-    }
-    
-    func mapView(mapView: MKMapView!, annotationView view: MKAnnotationView!, didChangeDragState newState: MKAnnotationViewDragState, fromOldState oldState: MKAnnotationViewDragState){
-    }
-    
-    func mapView(mapView: MKMapView!, annotationView view: MKAnnotationView!, calloutAccessoryControlTapped control: UIControl!){
-    }
-    
-    func mapViewDidStopLocatingUser(mapView: MKMapView!){
-    }
-    
     func mapView(mapView: MKMapView!, didUpdateUserLocation userLocation: MKUserLocation!){
         
-        println("MapView didUpdateUserLocation")
+        //println("MapView didUpdateUserLocation")
         if let lastLocation = lastFetchLocation{
             if let userLocation = mapView.userLocation.location {
                 updateStatus(userLocation)
@@ -269,6 +333,7 @@ extension TCMapViewController: MKMapViewDelegate{
                     lastFetchLocation =  userLocation
                     addRadiusOverlay(radiusFirstCircle, coordinate: userLocation.coordinate,zoom:true)
                 }
+                loadAircraft(userLocation, radiusDistance: radiusThirdCircle)
             }
         }
         else{
@@ -281,35 +346,61 @@ extension TCMapViewController: MKMapViewDelegate{
         }
 
     }
-//        mapView.userLocation.title = ""
-//        if mapView.userLocation.location != nil{
-        
-//            if let lastOptionalFetchLocation = lastFetchLocation{
-//                
-//                let meters:CLLocationDistance = lastOptionalFetchLocation.distanceFromLocation(map.userLocation.location)
-//                
-//                if meters > radius{
-//                    loadPlaces(map.userLocation.location, radiusDistance:radius)
-//                    addRadiusOverlay(self.radius, coordinate: map.userLocation.location.coordinate)
-//                }
-//                else{
-//                    println("\(meters) d \(radius)")
-//                }
-//            }
-//            else{
-//                addRadiusOverlay(self.radius,
-//                    coordinate: map.userLocation.location.coordinate,
-//                    zoom: true)
-//            }
-//        }
-//   }
     
-//    func mapView(mapView: MKMapView!, didFailToLocateUserWithError error: NSError!){
-//    }
+    func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
+        
+        if let treasure = annotation as? PFObject {
+            var view = mapView.dequeueReusableAnnotationViewWithIdentifier("pin") as MKPinAnnotationView!
+            if view == nil {
+                view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "pin")
+                view.canShowCallout = true
+                view.animatesDrop = false
+                view.calloutOffset = CGPoint(x: -5, y: 5)
+                view.rightCalloutAccessoryView = UIButton.buttonWithType(.DetailDisclosure) as UIView
+                
+                let icon = UIImage.hgImaheFromString("✈️")
+                view?.image = icon
+                view?.canShowCallout = true
+                view?.animatesDrop = false
+                
+            } else {
+                view.annotation = annotation
+            }
+            
+            //view.pinColor = treasure.pinColor()
+            
+            return view
+        }
+        return nil
+    }
 }
 
-
-
-
+extension UIImage{
+    
+    class func hgImaheFromString(str: NSString)-> UIImage{
+        
+        var label = UILabel()
+        label.text = str
+        label.font = UIFont(name: "Georgia", size: 30.0)!
+        label.textAlignment = .Center
+        label.layer.borderColor = UIColor.blackColor().CGColor
+        label.opaque = false
+        label.backgroundColor = UIColor.clearColor()
+        var dic = [NSFontAttributeName:label.font]
+        
+        var measuredSize:CGSize =  str.sizeWithAttributes(dic)
+        label.frame = CGRectMake(0, 0, measuredSize.width * 1, measuredSize.height * 1)
+        var img:UIImage = UIImage.ghImageFromView(label)
+        return img
+    }
+    
+    class func ghImageFromView(view: UIView)-> UIImage{
+        UIGraphicsBeginImageContextWithOptions(view.bounds.size, view.opaque, 0.0)
+        view.layer.renderInContext(UIGraphicsGetCurrentContext())
+        var img:UIImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext();
+        return img;
+    }
+}
 
 

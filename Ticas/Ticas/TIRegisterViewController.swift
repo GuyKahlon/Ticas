@@ -13,8 +13,11 @@ import MobileCoreServices
 struct ParseKeys {
     static let Pilotname     = "PilotName"
     static let AircraftType  = "Aircraft"
+    
     static let AircraftImage = "AircraftImage"
     static let PilotImage    = "PilotName"
+    
+    static let CallSign      = "CallSign"
 }
 
 struct ParseErrorKyes{
@@ -59,8 +62,6 @@ class TIRegisterViewController: UIViewController {
         pilotNameTextField.resignFirstResponder()
         aircraftTextField.resignFirstResponder()
     }
-    
-
     
     @IBAction func register() {
         if let callSignValue = callSign{
