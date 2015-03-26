@@ -8,6 +8,8 @@
 
 import UIKit
 import MapKit
+import AudioToolbox
+import AVFoundation
 
 class Flight {
     var numberOfPassengers: Int?
@@ -21,7 +23,8 @@ class TCMapViewController: UIViewController {
 
     var radiusFirstCircle: CLLocationDistance  =  Double(1000)
     var radiusSecondCircle: CLLocationDistance =  Double(2000)
-    var radiusThirdCircle: CLLocationDistance  =  Double(3000)
+    var radiusThirdCircle: CLLocationDistance  =  Double(3500)
+    
     var status:PFObject = PFObject(className: ParseStatus.StatusCalssName)
     
     @IBOutlet weak var mapView: MKMapView!
@@ -35,6 +38,7 @@ class TCMapViewController: UIViewController {
     @IBOutlet weak var altitudeLable: UILabel!
     @IBOutlet weak var startButton: UIButton!
     @IBOutlet weak var trafficFrquency: UILabel!
+    @IBOutlet weak var dashboardView: UIVisualEffectView!
     
     lazy private var locationManager: CLLocationManager = {
         var lezyLocationManager = CLLocationManager()
@@ -82,8 +86,12 @@ class TCMapViewController: UIViewController {
             //Stop
             startButton.selected = false
             startButton.backgroundColor = UIColor.blueColor()
+            timer?.invalidate()
+            removeOldData()
         }
         else{
+            //Remove all old data.
+            removeOldData()
             //Setup Flight
             performSegueWithIdentifier("popOverSetupFlightSegue",
                 sender: self)
@@ -99,6 +107,8 @@ class TCMapViewController: UIViewController {
             }
         }
     }
+    
+    private var timer: NSTimer?
     
     //pragma mark - Unwind Seques
     @IBAction func setupFlight(segue: UIStoryboardSegue) {
@@ -117,12 +127,67 @@ class TCMapViewController: UIViewController {
                     trafficFrquency.text = setupFlightVC.trafficFrequency
                     startButton.selected = true
                     startButton.backgroundColor = UIColor.redColor()
+                    
+                    if let t = timer{
+                        t.invalidate()
+                    }
+                    
+                    timer = NSTimer.scheduledTimerWithTimeInterval(1.0,
+                        target: self,
+                        selector: Selector("loadAircrafts:"),
+                        userInfo: nil,
+                        repeats: true)
                 }
             }
         }
     }
     
     var aircraftes = [String:PFObject]()
+    
+    func loadAircrafts(timer: NSTimer){
+        
+        let qualityOfServiceClass = QOS_CLASS_BACKGROUND
+        let backgroundQueue = dispatch_get_global_queue(qualityOfServiceClass, 0)
+        dispatch_async(backgroundQueue, {
+            if let userLocation = self.mapView.userLocation.location {
+                self.updateStatus(userLocation)
+                self.loadAircraft(userLocation, radiusDistance: self.radiusThirdCircle)
+            }
+        })
+    }
+    
+    func removeOldData(){
+        let qualityOfServiceClass = QOS_CLASS_BACKGROUND
+        let backgroundQueue = dispatch_get_global_queue(qualityOfServiceClass, 0)
+        dispatch_async(backgroundQueue, {
+            println("This is run on the background queue")
+            var query = PFQuery(className:ParseStatus.StatusCalssName)
+            query.whereKey(ParseStatus.Creator, equalTo: PFUser.currentUser())
+            query.findObjectsInBackgroundWithBlock { (statuses: [AnyObject]!, error: NSError!) -> Void in
+                
+                for st in statuses{
+                    if let s = st as? PFObject{
+                        s.delete()
+                    }
+                }
+            }
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                self.mapView.removeAnnotations(self.mapView.annotations)
+                self.dashboardView.backgroundColor = UIColor.clearColor()
+            })
+        })
+    }
+    
+//    func playSound(){
+//    
+//        let soundFilePath = NSBundle.mainBundle().pathForResource("traffic", ofType: "m4a")
+//        
+//        let soundFileURL = NSURL.fileURLWithPath(soundFilePath!)
+//        var player = AVAudioPlayer(contentsOfURL: soundFileURL, error: nil)
+//
+//        player.numberOfLoops = -1; //Infinite
+//        player.play()
+//    }
 }
 
 extension TCMapViewController: UIPopoverPresentationControllerDelegate{
@@ -130,8 +195,6 @@ extension TCMapViewController: UIPopoverPresentationControllerDelegate{
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController!) -> UIModalPresentationStyle {
         return .None
     }
-    
-    
 }
 
 extension TCMapViewController: CLLocationManagerDelegate{
@@ -189,7 +252,7 @@ extension TCMapViewController: CLLocationManagerDelegate{
         
         var query = PFQuery(className:ParseStatus.StatusCalssName)
         
-        query.whereKey("geoPoint", nearGeoPoint: PFGeoPoint(latitude: fromLocation.coordinate.latitude, longitude: fromLocation.coordinate.longitude), withinKilometers: 3000/1000)
+        query.whereKey("geoPoint", nearGeoPoint: PFGeoPoint(latitude: fromLocation.coordinate.latitude, longitude: fromLocation.coordinate.longitude), withinKilometers: radiusThirdCircle/1000)
         
         query.whereKey(ParseStatus.Creator, notEqualTo: PFUser.currentUser())
         query.includeKey(ParseStatus.Creator)
@@ -198,48 +261,54 @@ extension TCMapViewController: CLLocationManagerDelegate{
             
             println("loadAircraft : \(statuses?.count)")
             
-            var airCraft = [String:PFObject]()
-            for status in statuses{
-                if let oStatus = status as? PFObject{
-                    if let air = self.aircraftes[oStatus.objectId]{
-                        let location: PFGeoPoint  = status["geoPoint"] as PFGeoPoint
-                        let locationCoordinate = CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude)
-                        air.setCoordinate(locationCoordinate)
-                        airCraft[oStatus.objectId] = oStatus
-                        self.aircraftes[oStatus.objectId] = nil
-                    }
-                    else{
-                        airCraft[oStatus.objectId] = oStatus
-                        self.mapView.addAnnotation(oStatus)
-                    }
-                }
-            }
+//            var airCraft = [String:PFObject]()
+//            for status in statuses{
+//                if let oStatus = status as? PFObject{
+//                    if let air = self.aircraftes[oStatus.objectId]{
+//                        let location: PFGeoPoint  = status["geoPoint"] as PFGeoPoint
+//                        let locationCoordinate = CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude)
+//                        air.setCoordinate(locationCoordinate)
+//                        airCraft[oStatus.objectId] = oStatus
+//                        self.aircraftes[oStatus.objectId] = nil
+//                    }
+//                    else{
+//                        airCraft[oStatus.objectId] = oStatus
+//                        //self.mapView.addAnnotation(oStatus)
+//                    }
+//                }
+//            }
             
             //println("old Aircraft : \(self.aircraftes.count)")
             //println("new Aircraft : \(airCraft.count)")
             
             
-            for (key, oldAir) in self.aircraftes{
-                
-                for a in self.mapView.annotations{
-                    if let b = a as? PFObject{
-                        if b.objectId == oldAir.objectId{
-                            self.mapView.removeAnnotation(b)
-                        }
-                    }
-                }
-                
-                //println("objectId : \(oldAir.objectId)")
-                //println("Map annotations : \(self.mapView.annotations.count)")
-                //self.mapView.removeAnnotation(oldAir)
-                //println("Map annotations : \(self.mapView.annotations.count)")
-            }
+//            for (key, oldAir) in self.aircraftes{
+//                
+//                for a in self.mapView.annotations{
+//                    if let b = a as? PFObject{
+//                        if b.objectId == oldAir.objectId{
+//                            self.mapView.removeAnnotation(b)
+//                        }
+//                    }
+//                }
+//                
+//                //println("objectId : \(oldAir.objectId)")
+//                //println("Map annotations : \(self.mapView.annotations.count)")
+//                //self.mapView.removeAnnotation(oldAir)
+//                //println("Map annotations : \(self.mapView.annotations.count)")
+//            }
             
-            self.aircraftes = airCraft
+//            self.aircraftes = airCraft
             
             //println("Aircraft = \(statuses.count)")
-            //self.mapView.removeAnnotations(self.mapView.annotations)
-            //self.mapView.addAnnotations(Array(self.aircraftes.values))
+            
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                if self.timer?.valid == true{
+                    self.mapView.removeAnnotations(self.mapView.annotations)
+                    self.dashboardView.backgroundColor = UIColor.clearColor()
+                    self.mapView.addAnnotations(statuses)
+                }
+            })
         }
     }
 }
@@ -279,8 +348,6 @@ extension TCMapViewController: MKMapViewDelegate{
     
     private func updateStatus(location: CLLocation){
         
-        //var status:PFObject = PFObject(className: ParseStatus.StatusCalssName)
-        
         let geoPoint = PFGeoPoint(latitude:location.coordinate.latitude,
             longitude:location.coordinate.longitude)
         
@@ -293,18 +360,32 @@ extension TCMapViewController: MKMapViewDelegate{
         var acl:PFACL = PFACL(user: PFUser.currentUser()!)
         acl.setPublicReadAccess(true)
         status.ACL = acl
+
+        status.save()
         
-        status.saveEventually { (success:Bool,error: NSError?) -> Void in
-            if let saveError = error{
-                println("Fails to save status update")
-            }
-        }
+//        status.saveInBackgroundWithBlock { (success:Bool,error: NSError?) -> Void in
+//            if let saveError = error{
+//                println("Fails to save status update")
+//            }
+//            else{
+//                println("Update Status")
+//            }
+//        }
+//        status.saveEventually { (success:Bool,error: NSError?) -> Void in
+//            if let saveError = error{
+//                println("Fails to save status update")
+//            }
+//            else{
+//                println("Update Status")
+//            }
+//        }
         
-        
-        courseLabel.text = location.course.description
-        altitudeLable.text = (location.altitude * 3.2808399).description
-        speedLabel.text = location.speed.description + " kts"
-        
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            //String(format: "%.2f", 1.1999898878)
+            self.courseLabel.text = String(format: "%.2f", location.course)
+            self.altitudeLable.text = String(format: "%.2f", (location.altitude * 3.2808399))
+            self.speedLabel.text = String(format: "%.2f", location.speed) + " kts"
+        })
     }
     
     func mapView(mapView: MKMapView!,
@@ -325,7 +406,7 @@ extension TCMapViewController: MKMapViewDelegate{
         //println("MapView didUpdateUserLocation")
         if let lastLocation = lastFetchLocation{
             if let userLocation = mapView.userLocation.location {
-                updateStatus(userLocation)
+                //updateStatus(userLocation)
                 
                 let meters = lastLocation.distanceFromLocation(userLocation)
                 
@@ -333,7 +414,7 @@ extension TCMapViewController: MKMapViewDelegate{
                     lastFetchLocation =  userLocation
                     addRadiusOverlay(radiusFirstCircle, coordinate: userLocation.coordinate,zoom:true)
                 }
-                loadAircraft(userLocation, radiusDistance: radiusThirdCircle)
+                //loadAircraft(userLocation, radiusDistance: radiusThirdCircle)
             }
         }
         else{
@@ -350,19 +431,30 @@ extension TCMapViewController: MKMapViewDelegate{
     func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
         
         if let treasure = annotation as? PFObject {
+            
+            if let lastLocation = lastFetchLocation{
+                
+                let location: PFGeoPoint  = treasure["geoPoint"] as PFGeoPoint
+                let locationCoordinate = CLLocation(latitude: location.latitude, longitude: location.longitude)
+                                
+                let meters = lastLocation.distanceFromLocation(locationCoordinate)
+                    
+                if meters < radiusFirstCircle{
+                   dashboardView.backgroundColor = UIColor.redColor()
+                }
+            }
+            
             var view = mapView.dequeueReusableAnnotationViewWithIdentifier("pin") as MKPinAnnotationView!
             if view == nil {
                 view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "pin")
-                view.canShowCallout = true
+                //view.canShowCallout = true
                 view.animatesDrop = false
                 view.calloutOffset = CGPoint(x: -5, y: 5)
                 view.rightCalloutAccessoryView = UIButton.buttonWithType(.DetailDisclosure) as UIView
                 
                 let icon = UIImage.hgImaheFromString("✈️")
                 view?.image = icon
-                view?.canShowCallout = true
                 view?.animatesDrop = false
-                
             } else {
                 view.annotation = annotation
             }

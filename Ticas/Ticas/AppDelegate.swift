@@ -24,7 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             window?.rootViewController = mainViewControlle
             window?.makeKeyAndVisible()
         }
-    
+        application.idleTimerDisabled = true;
         return true
     }
 }
